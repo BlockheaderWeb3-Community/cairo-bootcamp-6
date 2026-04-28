@@ -14,26 +14,38 @@ enum MathError {
 fn main() {
     let add_result = add_number(10, 5);
     match add_result {
-        Result::Ok(v) => println!("add value {}", v),
+        Result::Ok(v) => {
+            assert!(v==15, "assertion failed")
+            println!("add value {}", v)
+        },
         Result::Err(_) => println!("add error ", ),
     };
 
     let mul_result = multiply_number(10, 5);
     match mul_result {
-        Result::Ok(v) => println!("mul value {}", v),
+        Result::Ok(v) => {
+            assert!(v==50, "assertion failed")
+            println!("mul value {}", v)
+        },
         Result::Err(_) => println!("mul error"),
     };
 
 
     let div_result = divide(10, 2);
     match div_result {
-        Result::Ok(v) => println!("div value {}", v),
+        Result::Ok(v) => {
+            assert!(v==5, "assertion failed")
+            println!("div value {}", v)
+        },
         Result::Err(_) => println!("div error", ),
     };
 
     let sub_result = sub_num(10, 7);
     match sub_result {
-        Result::Ok(v) => println!("sub value {}", v),
+        Result::Ok(v) => {
+             assert!(v==3, "assertion failed")
+            println!("sub value {}", v)
+        },
         Result::Err(_) => println!("sub error"),
     };
 }
