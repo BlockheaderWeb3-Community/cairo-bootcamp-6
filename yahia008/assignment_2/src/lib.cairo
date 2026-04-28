@@ -1,32 +1,28 @@
-/// Interface representing `HelloContract`.
-/// This interface allows modification and retrieval of the contract balance.
+use starknet::{ContractAddress, get_caller_address};
 #[starknet::interface]
-pub trait IHelloStarknet<TContractState> {
-    /// Increase contract balance.
-    fn increase_balance(ref self: TContractState, amount: felt252);
-    /// Retrieve contract balance.
-    fn get_balance(self: @TContractState) -> felt252;
+pub trait ICounter<T> {
+    fn increase_count(ref self: T, amount: u32);
+    fn transfer_ownership(ref self: T, new_owner: ContractAddress);
+    fn get_count(self: @T) -> u32;
+    fn get_owner(self: @T) -> ContractAddress;
+   
 }
 
-/// Simple contract for managing balance.
 #[starknet::contract]
-mod HelloStarknet {
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+mod CounterV2{
+       use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 
-    #[storage]
-    struct Storage {
-        balance: felt252,
+       use super::ICounter;
+       use starknet::ContractAddress;
+
+        #[storage]
+        struct Storage{
+        count:u32,
+        owner:ContractAddress
     }
 
-    #[abi(embed_v0)]
-    impl HelloStarknetImpl of super::IHelloStarknet<ContractState> {
-        fn increase_balance(ref self: ContractState, amount: felt252) {
-            assert(amount != 0, 'Amount cannot be 0');
-            self.balance.write(self.balance.read() + amount);
-        }
-
-        fn get_balance(self: @ContractState) -> felt252 {
-            self.balance.read()
-        }
+    #[constructor]
+    fn constructor(ref self:ContractState, initial_owner:ContractAddress){
+        self.owner.write(initial_owner);
     }
 }
