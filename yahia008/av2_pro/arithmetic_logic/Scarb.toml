@@ -1,0 +1,19 @@
+[package]
+name = "arithmetic_logic"
+version = "0.1.0"
+edition = "2025_12"
+
+
+[lib]
+sierra = true
+
+# See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
+
+[executable]
+
+[cairo]
+enable-gas = false
+
+[dependencies]
+cairo_execute = "2.17.0"
+
