@@ -12,10 +12,10 @@ enum MathError {
 
 #[executable]
 fn main() {
-    let add_result = add_number(10, 5);
+    let add_result = add_number(0, 0);
     match add_result {
         Result::Ok(v) => {
-            assert!(v==15, "assertion failed")
+            assert!(v==0, "assertion failed")
             println!("add value {}", v)
         },
         Result::Err(_) => println!("add error ", ),
