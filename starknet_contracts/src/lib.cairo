@@ -11,8 +11,8 @@ pub trait ICounter<T> {
 /// Simple contract for managing count.
 #[starknet::contract]
 mod Counter {
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::get_caller_address;
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 
     #[storage]
     struct Storage {
@@ -30,7 +30,7 @@ mod Counter {
         fn increase_count(ref self: ContractState, amount: u32) {
             // Only owner check
             assert(self.owner.read() == get_caller_address().into(), 'Caller is not the owner');
-            
+
             assert(amount != 0, 'Amount cannot be 0');
             // Read current count and add the amount
             let current_count = self.count.read();

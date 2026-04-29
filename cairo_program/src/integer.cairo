@@ -18,9 +18,8 @@ fn main() {
     let div_result: u8 = div_num(20, 4);
     println!("div result is: {}", div_result);
     assert(div_result == 5, 'invalid div logic');
-
     // Test division by zero - should panic
-    // div_num(10, 0); // This would panic
+// div_num(10, 0); // This would panic
 }
 
 // addition logic
