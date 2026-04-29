@@ -29,9 +29,7 @@ fn add_num(x: u8, y: u8) -> u8 {
 
 // subtraction logic with negative check
 fn sub_num(x: u8, y: u8) -> u8 {
-    if (y > x) {
-        panic_with_felt252('negative result not allowed');
-    }
+    assert(y <= x, 'negative result not allowed');
     return x - y;
 }
 
@@ -42,8 +40,6 @@ fn mul_num(x: u8, y: u8) -> u8 {
 
 // division logic with division by zero check
 fn div_num(x: u8, y: u8) -> u8 {
-    if (y == 0) {
-        panic_with_felt252('division by zero');
-    }
+    assert(y != 0, 'division by zero');
     x / y
 }
