@@ -1,16 +1,11 @@
-/// Interface representing `HelloContract`.
-/// This interface allows modification and retrieval of the contract's storage count.
 #[starknet::interface]
 pub trait ICounter<T> {
-    /// Increase count.
     fn increase_count(ref self: T, amount: u32);
-    /// Retrieve count.
     fn get_count(self: @T) -> u32;
 }
 
-/// Simple contract for managing count.
 #[starknet::contract]
-mod Counter {
+pub mod Counter {
     use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 
     #[storage]
@@ -30,3 +25,5 @@ mod Counter {
         }
     }
 }
+
+mod counter_v2;

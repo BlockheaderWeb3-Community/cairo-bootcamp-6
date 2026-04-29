@@ -3,3 +3,4 @@
 // mod integer;
 // mod bool;
 mod bytearray;
+pub mod arithmetic_v2;
