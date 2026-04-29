@@ -1,3 +1,7 @@
+[sncast.dave]
+url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_7"
+accounts-file = "~/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+account = "dave"
 # Visit https://foundry-rs.github.io/starknet-foundry/appendix/snfoundry-toml.html
 # and https://foundry-rs.github.io/starknet-foundry/projects/configuration.html for more information
 

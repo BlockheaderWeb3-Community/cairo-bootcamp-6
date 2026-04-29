@@ -30,10 +30,10 @@ pub mod Counter {
     struct CountDecreased { by: u8, new_value: u8 }
 
     #[constructor]
-    fn constructor(ref self: ContractState, initial_count: u8) {
-        self.owner.write(starknet::get_caller_address());
-        self.count.write(initial_count);
-    }
+fn constructor(ref self: ContractState, owner: starknet::ContractAddress, initial_count: u8) {
+    self.owner.write(owner);
+    self.count.write(initial_count);
+}
 
     fn assert_only_owner(self: @ContractState) {
         assert(
