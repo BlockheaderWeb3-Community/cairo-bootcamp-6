@@ -1,20 +1,60 @@
+use core::result::Result;
+
 #[executable]
 fn main() {
     let result: u8 = add_num(5, 6);
-    println!("the sum of x & y is: {}", result);
+    println!("The sum of x & y is: {}", result);
     assert(result == 11, 'invalid sum logic');
 
-    let sub_result: u8 = sub_num(10, 5);
-    println!("sub result is: {}", sub_result);
-    assert(sub_result == 5, 'invalid sub logic');
+    let sub_result = sub_num(10, 5);
+    match sub_result {
+        Result::Ok(value) => {
+            println!("Sub result is: {}", value);
+            assert(value == 5, 'invalid sub');
+        },
+        Result::Err(err) => {
+            println!("subtraction failed: {}", err);
+            assert(false, 'unexpected error in sub_num');
+        },
+    }
+
+    let mul_result: u8 = mul_num(5, 2);
+    println!("Mul result of x & y is {}", mul_result);
+    assert(mul_result == 10, 'invalid mul');
+
+    let div_result = div_num(10, 10);
+    match div_result {
+        Result::Ok(value) => {
+            println!("Div result of x & y is {}", value);
+            assert(value == 1, 'invalid div');
+        },
+        Result::Err(err) => {
+            println!("division failed: {}", err);
+            assert(false, 'unexpected error in div_num');
+        },
+    }
 }
 
-// addition logic
 fn add_num(x: u8, y: u8) -> u8 {
     x + y
 }
 
-// subtraction logic
-fn sub_num(x: u8, y: u8) -> u8 {
-    return x - y;
+fn sub_num(x: u8, y: u8) -> Result<u8, felt252> {
+    if y > x {
+        Result::Err('result would be negative')
+    } else {
+        Result::Ok(x - y)
+    }
+}
+
+fn mul_num(x: u8, y: u8) -> u8 {
+    x * y
+}
+
+fn div_num(x: u8, y: u8) -> Result<u8, felt252> {
+    if y != 0 {
+        Result::Ok(x / y)
+    } else {
+        Result::Err('not divisible by zero')
+    }
 }
