@@ -14,6 +14,7 @@ pub trait ICounter<T> {
 pub mod Counter {
     use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::{ContractAddress, get_caller_address};
+    use cairo_6::integer::{add_num, sub_num};
 
     #[storage]
     struct Storage {
@@ -64,7 +65,7 @@ pub mod Counter {
         fn increase_count(ref self: ContractState, amount: u32) {
             self.assert_only_owner();
             assert(amount != 0, 'Amount cannot be 0');
-            let new_count = self.count.read() + amount;
+            let new_count = add_num(self.count.read(), amount).expect('Amount causes overflow');
             self.count.write(new_count);
             self.emit(Event::CountIncreased(CountIncreased { amount, new_count }));
         }
@@ -73,8 +74,7 @@ pub mod Counter {
             self.assert_only_owner();
             assert(amount != 0, 'Amount cannot be 0');
             let current_count = self.count.read();
-            assert(current_count >= amount, 'Amount exceeds count');
-            let new_count = current_count - amount;
+            let new_count = sub_num(current_count, amount).expect('Amount exceeds count');
             self.count.write(new_count);
             self.emit(Event::CountDecreased(CountDecreased { amount, new_count }));
         }

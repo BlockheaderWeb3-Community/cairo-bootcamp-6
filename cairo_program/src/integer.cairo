@@ -1,71 +1,62 @@
-use core::result;
-use core::panic_with_felt252;
-
-#[executable]
-fn main() {
-    // Addition
-    let addResult: u32 = add_num(20, 7);
-    println!("the sum of x & y is: {}", addResult);
-
-    // Subtraction
-    let sub_result: Result<u32, felt252> = sub_num(16, 9);
-    match sub_result {
-        Result::Ok(value) => {
-            println!("sub result is: {}", value);
-            // assert(sub_result == 7, 'Invalid difference logic');            
-        },
-        Result::Err(err) => { panic_with_felt252(err); },
-    }
-
-    // Multiplication
-    let multiplication_result: u32 = multiply_num(5, 6);
-    println!("The multiplication of x and y is: {}", multiplication_result);
-
-    // Division 
-    let division_result = divide_num(0, 10);
-    match division_result {
-        Result::Ok(value) => { 
-            println!("Dividing x and y will give you: {}", value); 
-        },
-        Result::Err(err) => { 
-            panic_with_felt252(err);
-        },
-    }
+// === Arithmetic Functions
+pub fn add_num(x: u32, y: u32) -> Result<u32, felt252> {
+    let result: u256 = x.into() + y.into();
+    result.try_into().ok_or('Addition overflow')
 }
 
-#[derive(Drop)]
-enum Result<T, E> {
-    Ok: T,
-    Err: E,
-}
-
-// addition logic
-fn add_num(x: u32, y: u32) -> u32 {
-    let result: u32 = x + y;
-    return result;
-}
-
-// subtraction logic
-fn sub_num(x: u32, y: u32) -> Result<u32, felt252> {
+pub fn sub_num(x: u32, y: u32) -> Result<u32, felt252> {
     if x < y {
-        Result::Err('Subtraction error')
+        Result::Err('Subtraction underflow')
     } else {
         Result::Ok(x - y)
     }
 }
 
-// multiplication logic
-fn multiply_num(x: u32, y: u32) -> u32 {
-  x * y  
+pub fn multiply_num(x: u32, y: u32) -> Result<u32, felt252> {
+    let result: u256 = x.into() * y.into();
+    result.try_into().ok_or('Multiplication overflow')
 }
 
-// division function
-fn divide_num(x: u32, y: u32) -> Result<u32, felt252> {
-  if y == 0 {
-    Result::Err('Division by zero is not allowed')
-  } else {
-    Result::Ok(x / y)
-  }
+pub fn divide_num(x: u32, y: u32) -> Result<u32, felt252> {
+    if y == 0 {
+        Result::Err('Division by zero')
+    } else {
+        Result::Ok(x / y)
+    }
 }
 
+// === Tests
+#[cfg(test)]
+mod tests {
+    use super::{add_num, sub_num, multiply_num, divide_num};
 
+    #[test]
+    fn test_add_num() {
+        assert!(add_num(20, 7) == Result::Ok(27), "add failed");
+    }
+
+    #[test]
+    fn test_sub_num_ok() {
+        assert!(sub_num(16, 9) == Result::Ok(7), "sub failed");
+    }
+
+    #[test]
+    fn test_sub_num_underflow() {
+        assert!(sub_num(3, 10) == Result::Err('Subtraction underflow'), "underflow check failed");
+    }
+
+    #[test]
+    fn test_multiply_num() {
+        assert!(multiply_num(5, 6) == Result::Ok(30), "multiply failed");
+    }
+
+    #[test]
+    fn test_divide_num_ok() {
+        assert!(divide_num(20, 5) == Result::Ok(4), "divide failed");
+    }
+
+    #[test]
+    fn test_divide_by_zero() {
+        assert!(divide_num(10, 0) == Result::Err('Division by zero'), "div zero check failed");
+    }
+}
