@@ -1,5 +1,7 @@
 // mod hello_world;
 // mod short_string;
-// mod integer;
+pub mod integer;
 // mod bool;
-mod bytearray;
+// mod bytearray;
+
+
