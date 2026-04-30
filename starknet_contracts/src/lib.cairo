@@ -4,6 +4,8 @@
 pub trait ICounter<T> {
     /// Increase count.
     fn increase_count(ref self: T, amount: u32);
+    /// Decrease count.
+    fn reduce_count(ref self: T, amount: u32);
     /// Retrieve count.
     fn get_count(self: @T) -> u32;
 }
@@ -35,6 +37,17 @@ mod Counter {
             // Read current count and add the amount
             let current_count = self.count.read();
             self.count.write(current_count + amount);
+        }
+
+        fn reduce_count(ref self: ContractState, amount: u32) {
+            // Only owner check
+            assert(self.owner.read() == get_caller_address(), 'Caller is not the owner');
+
+            assert(amount != 0, 'Amount cannot be 0');
+            // Read current count and subtract the amount
+            let current_count = self.count.read();
+            assert(current_count >= amount, 'Insufficient count');
+            self.count.write(current_count - amount);
         }
 
         fn get_count(self: @ContractState) -> u32 {
