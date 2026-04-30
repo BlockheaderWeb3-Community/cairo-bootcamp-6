@@ -15,13 +15,13 @@ pub trait ICounter<T> {
 
 #[starknet::contract]
 mod CounterV2{
-       use crate::mylogic;
+       
 use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 
        use super::ICounter;
        use starknet::ContractAddress;
        use starknet::get_caller_address;
-       
+       use super::mylogic;
 
         #[storage]
         struct Storage{
