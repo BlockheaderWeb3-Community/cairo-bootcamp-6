@@ -7,10 +7,7 @@ pub trait ICounter<T> {
     fn transfer_ownership(ref self: T, new_owner: ContractAddress);
     fn increase_count(ref self: T, amount: u128);
     fn decrease_count (ref self:T, amount:u128);
-    fn reset_count(ref self:T);
-   
-    
-   
+    fn reset_count(ref self:T);    
 }
 
 #[starknet::contract]

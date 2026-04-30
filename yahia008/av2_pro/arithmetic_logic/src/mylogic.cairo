@@ -27,6 +27,9 @@ pub fn sub_num(x: u128, y: u128) -> u128 {
 }
 
 pub fn multiply_number(x:u128, y:u128) -> Result<u128, MathError> {
+    if x == 0 || y == 0 {
+        return Result::Ok(0);
+    } 
     x.checked_mul(y).ok_or(MathError::Overflow)
 }
 
