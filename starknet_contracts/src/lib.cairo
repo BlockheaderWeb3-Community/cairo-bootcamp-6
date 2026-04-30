@@ -23,8 +23,8 @@ mod Counter {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState) {
-        self.owner.write(get_caller_address()); // no .into() needed
+    fn constructor(ref self: ContractState, owner: ContractAddress) {
+        self.owner.write(owner);
     }
 
     #[abi(embed_v0)]
