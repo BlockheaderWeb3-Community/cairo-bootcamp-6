@@ -5,6 +5,8 @@ edition = "2025_12"
 
 # See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
 
+[lib]
+
 [executable]
 
 [cairo]
@@ -12,5 +14,3 @@ enable-gas = false
 
 [dependencies]
 cairo_execute = "2.18.0"
-
-
