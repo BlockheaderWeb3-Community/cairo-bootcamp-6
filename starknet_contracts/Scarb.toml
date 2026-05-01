@@ -7,13 +7,16 @@ edition = "2024_07"
 
 [dependencies]
 starknet = "2.18.0"
+cairo_6 = { path = "../cairo_program" }
 
 [dev-dependencies]
-snforge_std = "0.56.0"
+snforge_std = "0.59.0"
 assert_macros = "2.18.0"
 
 [[target.starknet-contract]]
 sierra = true
+
+[lib]
 
 [scripts]
 test = "snforge test"

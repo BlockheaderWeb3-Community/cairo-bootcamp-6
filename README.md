@@ -16,7 +16,20 @@ This Cairo Bootcamp is designed to:
 ---
 
 ## 📁 Repository Structure
+The repository is organized into the following directories
 .
-├── cairo_programs/ # Pure Cairo programs (stateless logic)
+├── cairo_program/ # Pure Cairo programs (stateless logic)
+│   ├── README.md
+│   ├── Scarb.lock
+│   ├── Scarb.toml
+│   ├── src
+│   └── target
+├── README.md
 ├── starknet_contracts/ # Smart contracts (stateful logic)
-└── README.md
+│   ├── Scarb.lock
+│   ├── Scarb.toml
+│   ├── snfoundry.toml
+│   └── src
+└── target
+    ├── CACHEDIR.TAG
+    └── cairo-language-server
