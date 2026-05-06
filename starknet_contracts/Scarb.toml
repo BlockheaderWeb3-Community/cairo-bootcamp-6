@@ -12,6 +12,9 @@ starknet = "2.18.0"
 snforge_std = "0.56.0"
 assert_macros = "2.18.0"
 
+[sncast.sepolia]
+rpc_url = "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_10/G4jDk3UFm0zD_87h21VJH"
+
 [[target.starknet-contract]]
 sierra = true
 

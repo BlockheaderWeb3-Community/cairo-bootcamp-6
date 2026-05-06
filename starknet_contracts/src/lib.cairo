@@ -11,8 +11,9 @@ pub trait ICounter<T> {
     fn increase_count(ref self: T, amount: u32);
     /// Retrieve count.
     fn get_count(self: @T) -> u32;
-    fn only_owner(self: @T);
     fn reduce_count(ref self: T, amount: u32);
+    fn only_owner(self: @T);
+    fn get_owner(self: @T) -> ContractAddress;
 }
 
 /// Simple contract for managing count.
@@ -55,6 +56,10 @@ mod Counter {
 
         fn get_count(self: @ContractState) -> u32 {
             self.count.read()
+        }
+
+        fn get_owner(self: @ContractState) -> ContractAddress {
+            self.owner.read()
         }
     }
 }

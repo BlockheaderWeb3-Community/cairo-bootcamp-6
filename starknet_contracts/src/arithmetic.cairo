@@ -4,7 +4,8 @@ pub fn add(x: u32, y: u32) -> u32 {
 }
 
 pub fn subtract(x: u32, y: u32) -> u32{
-    assert(x > y, 'y cant br greater than x');
+    assert(x > 0, 'x must be greater than 0');
+    assert(x > y, 'y cant be greater than x');
     x - y
 }
 
