@@ -7,6 +7,7 @@ use starknet::{ContractAddress, get_caller_address};
 /// This interface allows modification and retrieval of the contract's storage count.
 #[starknet::interface]
 pub trait ICounter<T> {
+    fn change_owner(ref self: T, new_owner: ContractAddress);
     /// Increase count.
     fn increase_count(ref self: T, amount: u32);
     /// Retrieve count.
@@ -19,7 +20,8 @@ pub trait ICounter<T> {
 /// Simple contract for managing count.
 #[starknet::contract]
 mod Counter {
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+    use crate::ICounter;
+use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use super::{add, subtract};
     use super::{ContractAddress, get_caller_address};
 
@@ -41,6 +43,11 @@ mod Counter {
             let caller = get_caller_address();
             assert(caller == self.owner.read(), 'Not owner');
         }
+        
+        fn change_owner(ref self: ContractState, new_owner: ContractAddress) {
+            self.only_owner();
+            self.owner.write(new_owner);
+        } 
 
         fn increase_count(ref self: ContractState, amount: u32) {
             self.only_owner();
@@ -61,5 +68,6 @@ mod Counter {
         fn get_owner(self: @ContractState) -> ContractAddress {
             self.owner.read()
         }
+
     }
 }
