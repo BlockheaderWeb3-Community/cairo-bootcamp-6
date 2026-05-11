@@ -1,11 +1,13 @@
-use starknet::SyscallResultTrait;
-use starknet::ContractAddress;
 use snforge_std::{
-    declare, ContractClassTrait, DeclareResultTrait, start_cheat_caller_address,
-    stop_cheat_caller_address, spy_events, EventSpyAssertionsTrait,
+    ContractClassTrait, DeclareResultTrait, EventSpyAssertionsTrait, declare, spy_events,
+    start_cheat_caller_address, stop_cheat_caller_address,
 };
-use starknet_contracts::{ICounterDispatcher, ICounterDispatcherTrait, ICounterSafeDispatcher, ICounterSafeDispatcherTrait};
-use starknet_contracts::Counter::{CountIncreased, CountDecreased, CountReset, Event};
+use starknet::{ContractAddress, SyscallResultTrait};
+use starknet_contracts::Counter::{CountDecreased, CountIncreased, CountReset, Event};
+use starknet_contracts::{
+    ICounterDispatcher, ICounterDispatcherTrait, ICounterSafeDispatcher,
+    ICounterSafeDispatcherTrait,
+};
 
 // === Helpers
 fn OWNER() -> ContractAddress {
@@ -28,7 +30,6 @@ fn deploy_counter() -> (ICounterDispatcher, ICounterSafeDispatcher, ContractAddr
 }
 
 // === Deployment
-
 #[test]
 fn test_initial_state() {
     let (dispatcher, _, _) = deploy_counter();
@@ -36,7 +37,7 @@ fn test_initial_state() {
     assert(dispatcher.get_owner() == OWNER(), 'Owner should match constructor');
 }
 
-// === increase_count
+// === Increase count
 #[test]
 fn test_increase_count() {
     let (dispatcher, _, contract_address) = deploy_counter();
@@ -66,7 +67,7 @@ fn test_increase_count_zero_amount_fails() {
         Result::Err(panic_data) => {
             assert(*panic_data.at(0) == 'Amount cannot be 0', 'Wrong error message');
         },
-    };
+    }
     stop_cheat_caller_address(contract_address);
 }
 
@@ -80,12 +81,11 @@ fn test_increase_count_not_owner_fails() {
         Result::Err(panic_data) => {
             assert(*panic_data.at(0) == 'Caller is not owner', 'Wrong error message');
         },
-    };
+    }
     stop_cheat_caller_address(contract_address);
 }
 
-// === decrease_count
-
+// === Decrease count
 #[test]
 fn test_decrease_count() {
     let (dispatcher, _, contract_address) = deploy_counter();
@@ -106,7 +106,7 @@ fn test_decrease_count_zero_amount_fails() {
         Result::Err(panic_data) => {
             assert(*panic_data.at(0) == 'Amount cannot be 0', 'Wrong error message');
         },
-    };
+    }
     stop_cheat_caller_address(contract_address);
 }
 
@@ -121,7 +121,7 @@ fn test_decrease_count_exceeds_fails() {
         Result::Err(panic_data) => {
             assert(*panic_data.at(0) == 'Amount exceeds count', 'Wrong error message');
         },
-    };
+    }
     stop_cheat_caller_address(contract_address);
 }
 
@@ -135,12 +135,11 @@ fn test_decrease_count_not_owner_fails() {
         Result::Err(panic_data) => {
             assert(*panic_data.at(0) == 'Caller is not owner', 'Wrong error message');
         },
-    };
+    }
     stop_cheat_caller_address(contract_address);
 }
 
-// === reset_count
-
+// === Reset count
 #[test]
 fn test_reset_count() {
     let (dispatcher, _, contract_address) = deploy_counter();
@@ -161,12 +160,11 @@ fn test_reset_count_not_owner_fails() {
         Result::Err(panic_data) => {
             assert(*panic_data.at(0) == 'Caller is not owner', 'Wrong error message');
         },
-    };
+    }
     stop_cheat_caller_address(contract_address);
 }
 
 // === Events
-
 #[test]
 fn test_increase_count_emits_event() {
     let (dispatcher, _, contract_address) = deploy_counter();
@@ -175,14 +173,15 @@ fn test_increase_count_emits_event() {
     dispatcher.increase_count(5);
     stop_cheat_caller_address(contract_address);
 
-    spy.assert_emitted(
-        @array![
-            (
-                contract_address,
-                Event::CountIncreased(CountIncreased { amount: 5, new_count: 5 }),
-            ),
-        ],
-    );
+    spy
+        .assert_emitted(
+            @array![
+                (
+                    contract_address,
+                    Event::CountIncreased(CountIncreased { amount: 5, new_count: 5 }),
+                ),
+            ],
+        );
 }
 
 #[test]
@@ -194,14 +193,15 @@ fn test_decrease_count_emits_event() {
     dispatcher.decrease_count(3);
     stop_cheat_caller_address(contract_address);
 
-    spy.assert_emitted(
-        @array![
-            (
-                contract_address,
-                Event::CountDecreased(CountDecreased { amount: 3, new_count: 7 }),
-            ),
-        ],
-    );
+    spy
+        .assert_emitted(
+            @array![
+                (
+                    contract_address,
+                    Event::CountDecreased(CountDecreased { amount: 3, new_count: 7 }),
+                ),
+            ],
+        );
 }
 
 #[test]
@@ -213,12 +213,8 @@ fn test_reset_count_emits_event() {
     dispatcher.reset_count();
     stop_cheat_caller_address(contract_address);
 
-    spy.assert_emitted(
-        @array![
-            (
-                contract_address,
-                Event::CountReset(CountReset { previous_count: 8 }),
-            ),
-        ],
-    );
+    spy
+        .assert_emitted(
+            @array![(contract_address, Event::CountReset(CountReset { previous_count: 8 }))],
+        );
 }

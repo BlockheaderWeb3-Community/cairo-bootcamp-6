@@ -12,9 +12,9 @@ pub trait ICounter<T> {
 /// Simple contract for managing count with ownership and events.
 #[starknet::contract]
 pub mod Counter {
+    use cairo_6::integer::{add_num, sub_num};
     use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::{ContractAddress, get_caller_address};
-    use cairo_6::integer::{add_num, sub_num};
 
     #[storage]
     struct Storage {
