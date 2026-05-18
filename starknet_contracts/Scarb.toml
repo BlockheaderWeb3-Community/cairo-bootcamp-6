@@ -5,8 +5,13 @@ edition = "2024_07"
 
 # See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
 
+
 [dependencies]
 starknet = "2.18.0"
+cairo_execute = "2.18.0"
+
+[cairo]
+enable-gas = true
 
 [dev-dependencies]
 snforge_std = "0.56.0"

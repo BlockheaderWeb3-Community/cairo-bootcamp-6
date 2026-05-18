@@ -18,7 +18,6 @@ fn is_adult(x: u8) -> bool {
     return true;
 }
 
-
 // determine even numbers
 fn is_even(x: u8) -> bool {
     if x % 2 == 0 {
