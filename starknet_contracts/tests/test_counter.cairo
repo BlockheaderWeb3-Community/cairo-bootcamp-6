@@ -218,3 +218,4 @@ fn test_reset_count_emits_event() {
             @array![(contract_address, Event::CountReset(CountReset { previous_count: 8 }))],
         );
 }
+ 
